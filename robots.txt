@@ -1,0 +1,7 @@
+# Dewpitch site: all crawlers welcome.
+# GitHub Pages serves this project site under a path; crawlers read only the origin's
+# https://nguyenvanlamm.github.io/robots.txt, which should list this sitemap too.
+User-agent: *
+Allow: /
+
+Sitemap: https://nguyenvanlamm.github.io/dewpitch-site/sitemap.xml
