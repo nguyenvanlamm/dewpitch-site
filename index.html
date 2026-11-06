@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dewpitch: draw cold lines, turn steam into rain</title>
+<meta name="description" content="Dewpitch is a physics puzzle for iPhone: draw rime lines so rising steam beads into rain and fills thirsty pitcher plants. Chapter I is free. No ads.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#1A1411">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://nguyenvanlamm.github.io/dewpitch-site/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="sitemap" type="application/xml" href="sitemap.xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Dewpitch">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://nguyenvanlamm.github.io/dewpitch-site/">
+<meta property="og:title" content="Dewpitch: draw cold lines, turn steam into rain">
+<meta property="og:description" content="Steam rises from the vents of a volcanic highland. Draw a line of rime above it and the steam beads into drops that rain into a thirsty pitcher plant. Coming soon to the App Store.">
+<meta property="og:image" content="https://nguyenvanlamm.github.io/dewpitch-site/assets/og-condense.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="631">
+<meta property="og:image:alt" content="A frosted line in Dewpitch with drops beading along it, steam rising from below and a pitcher plant at its low end">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dewpitch: draw cold lines, turn steam into rain">
+<meta name="twitter:description" content="A physics puzzle for iPhone where steam rises, beads on the line you draw and rains into pitcher plants. Chapter I free, no ads.">
+<meta name="twitter:image" content="https://nguyenvanlamm.github.io/dewpitch-site/assets/og-condense.jpg">
+<meta name="twitter:image:alt" content="A frosted line in Dewpitch with drops beading along it, steam rising from below and a pitcher plant at its low end">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap">
+<style>
+  :root {
+    --basalt: #1A1411; --rock: #1D1613; --rock-deep: #151010; --ledge: #5E4A3B; --divider: #3A2F29;
+    --ink: #F3E9DC; --soft: #D0C3B4; --label: #B3A596;
+    --cold: #CADCEB; --warm: #ECDCC5; --frost: #CFE1EE; --sulfur: #F0D98C;
+    --jade: #2E6A52; --jade-edge: #55A07C; --jade-text: #F2E9DC; --vein: #8FCBA9;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--rock-deep); color: var(--soft); font: 17px/1.6 var(--sans); -webkit-text-size-adjust: 100%; }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: var(--vein); text-underline-offset: 3px; }
+  a:hover { color: var(--frost); }
+  a:focus-visible, .cta:focus-visible { outline: 2px solid var(--frost); outline-offset: 3px; border-radius: 6px; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 400; color: var(--ink); margin: 0; text-wrap: balance; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+
+  /* Dusk over the highland, then the basalt ledge: the home screen's sky and rock. */
+  .sky {
+    background:
+      radial-gradient(circle at 16% 86%, rgba(244, 207, 138, .55) 0, rgba(238, 188, 120, .18) 46px, rgba(232, 168, 96, 0) 150px),
+      linear-gradient(180deg, #231B1F 0%, #32252A 42%, #523A31 70%, #78563B 90%, #93704A 100%);
+    border-bottom: 1px solid var(--ledge);
+  }
+  header { display: flex; align-items: center; gap: 12px; padding-top: 22px; }
+  header img { width: 40px; height: 40px; border-radius: 10px; }
+  header .name { font-family: var(--serif); font-size: 24px; color: #F4ECE1; letter-spacing: .01em; }
+  .hero { display: grid; gap: 32px; padding: 36px 0 0; }
+  .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--label); margin: 0 0 14px; }
+  h1 { font-size: clamp(30px, 9.2vw, 60px); line-height: 1.1; letter-spacing: -.005em; text-wrap: wrap; }
+  h1 .cold { color: var(--cold); display: block; }
+  h1 .warm { color: var(--warm); display: block; }
+  .lede { font-size: 18px; color: var(--soft); margin: 18px 0 26px; max-width: 34em; }
+  .cta {
+    display: inline-block; background: var(--jade); color: var(--jade-text); border: 1px solid var(--jade-edge);
+    font: 600 18px/1 var(--sans); text-decoration: none; padding: 16px 26px; border-radius: 14px;
+  }
+  .cta:hover { color: var(--jade-text); background: #337559; }
+  .soon { margin: 14px 0 0; font-size: 14px; letter-spacing: .04em; color: var(--label); }
+  .soon b { color: var(--ink); font-weight: 600; }
+  .facts { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: var(--soft); }
+  .facts li::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--frost); margin: 0 8px 2px 0; opacity: .8; }
+  .shot { margin: 0 auto; width: min(100%, 300px); }
+  .shot img, .stills img { border-radius: 26px; border: 1px solid rgba(243, 233, 220, .14); box-shadow: 0 18px 40px rgba(10, 6, 5, .55); }
+  .hero .shot { margin-bottom: -48px; position: relative; }
+  figcaption { font-size: 14px; line-height: 1.45; color: var(--label); margin-top: 12px; }
+  .hero figcaption { color: var(--ink); text-shadow: 0 1px 2px rgba(0, 0, 0, .5); }
+
+  section { padding: 64px 0 8px; }
+  .first { padding-top: 96px; }
+  h2 { font-size: clamp(28px, 7vw, 40px); line-height: 1.15; margin-bottom: 10px; }
+  .intro { margin: 0 0 28px; max-width: 36em; }
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 22px; }
+  .steps li { display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start; }
+  .steps svg { width: 40px; height: 40px; }
+  .steps h3 { font-size: 21px; line-height: 1.25; margin: 2px 0 4px; }
+  .steps p { margin: 0; }
+  .stills { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 36px 0 0; }
+  .stills figure { margin: 0; }
+
+  .chapters { list-style: none; padding: 0; margin: 8px 0 0; border-top: 1px solid var(--divider); }
+  .chapters li { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; padding: 14px 0; border-bottom: 1px solid var(--divider); }
+  .chapters .t { font-size: 18px; font-weight: 500; color: var(--ink); }
+  .chapters .t small { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--sulfur); margin-left: 8px; }
+  .chapters .d { grid-column: 1; font-size: 15px; color: var(--soft); }
+  .chapters .n { grid-column: 2; grid-row: 1 / span 2; font-family: var(--serif); font-size: 22px; color: #A99B8D; align-self: center; }
+  .points { margin: 26px 0 0; padding-left: 20px; display: grid; gap: 10px; }
+  .points li::marker { color: var(--frost); }
+
+  .price { display: grid; gap: 14px; margin-top: 8px; }
+  .tier { border: 1px solid var(--divider); border-radius: 18px; padding: 18px 18px 16px; background: var(--rock); display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; }
+  .tier.full { border-color: var(--jade-edge); }
+  .tier h3 { font-size: 22px; }
+  .tier .amt { font-family: var(--serif); font-size: 26px; color: var(--ink); text-align: right; line-height: 1.2; }
+  .tier .amt small { display: block; font-family: var(--sans); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--label); }
+  .tier p { grid-column: 1 / -1; margin: 0; font-size: 16px; }
+  .note { font-size: 15px; color: var(--label); margin: 16px 0 0; max-width: 40em; }
+
+  dl { margin: 8px 0 0; }
+  dt { font-weight: 600; color: var(--ink); margin-top: 20px; }
+  dd { margin: 4px 0 0; }
+
+  .end { text-align: center; padding: 72px 0 64px; }
+  .end p { margin: 10px auto 0; max-width: 32em; }
+  .end .soon { font-size: 15px; }
+
+  footer { border-top: 1px solid var(--divider); background: var(--basalt); padding: 28px 0 36px; font-size: 15px; color: var(--label); }
+  footer .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; }
+  footer img { width: 28px; height: 28px; border-radius: 7px; }
+  footer .brand { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 19px; color: var(--ink); }
+  footer nav { display: flex; gap: 18px; }
+  footer .copy { margin: 0; flex-basis: 100%; font-size: 14px; }
+
+  @media (min-width: 820px) {
+    .hero { grid-template-columns: 1.2fr .8fr; align-items: center; gap: 48px; padding-top: 48px; }
+    .hero .shot { margin-bottom: -64px; }
+    .first { padding-top: 120px; }
+    .how { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .stills { margin-top: 0; }
+    .price { grid-template-columns: 1fr 1fr; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://nguyenvanlamm.github.io/dewpitch-site/#website",
+      "name": "Dewpitch",
+      "url": "https://nguyenvanlamm.github.io/dewpitch-site/",
+      "inLanguage": "en",
+      "about": { "@id": "https://nguyenvanlamm.github.io/dewpitch-site/#game" }
+    },
+    {
+      "@type": ["VideoGame", "MobileApplication"],
+      "@id": "https://nguyenvanlamm.github.io/dewpitch-site/#game",
+      "name": "Dewpitch",
+      "alternativeHeadline": "Draw cold lines. Turn steam into rain.",
+      "description": "A physics puzzle for iPhone set on a volcanic highland. Steam rises from vents and beads on the rime lines you draw; the drops run to the low end and rain into pitcher plants, and water that lands on a hot stone boils back into steam. 60 levels in four chapters. Chapter I is free; one purchase, The whole highlands, opens Chapters II to IV and makes Hint and Refill unlimited. No ads, no account, nothing collected. Coming soon to the App Store.",
+      "url": "https://nguyenvanlamm.github.io/dewpitch-site/",
+      "image": "https://nguyenvanlamm.github.io/dewpitch-site/assets/icon-180.png",
+      "screenshot": "https://nguyenvanlamm.github.io/dewpitch-site/assets/play-condense.webp",
+      "operatingSystem": "iOS",
+      "applicationCategory": "GameApplication",
+      "genre": "Puzzle",
+      "playMode": "SinglePlayer",
+      "inLanguage": "en",
+      "isAccessibleForFree": true
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<div class="sky">
+  <div class="wrap">
+    <header>
+      <img src="assets/icon-180.png" alt="" width="40" height="40">
+      <span class="name">Dewpitch</span>
+    </header>
+    <div class="hero">
+      <div>
+        <p class="eyebrow">A physics puzzle for iPhone</p>
+        <h1><span class="cold">Draw cold lines.</span> <span class="warm">Turn steam into rain.</span></h1>
+        <p class="lede">Steam drifts up from the vents of a volcanic highland. Draw a line of rime above it and the steam beads into drops that roll down the line and rain into a thirsty pitcher plant.</p>
+        <a class="cta" href="#how">See steam turn into rain</a>
+        <p class="soon"><b>App Store</b> · coming soon</p>
+        <ul class="facts">
+          <li>60 levels</li>
+          <li>Chapter I free</li>
+          <li>No ads</li>
+          <li>Nothing collected</li>
+        </ul>
+      </div>
+      <figure class="shot">
+        <img src="assets/play-condense.webp" width="390" height="844" fetchpriority="high"
+             alt="Level I·01 of Dewpitch: steam rises from a vent, beads into drops along a frosted line and runs into a pitcher plant on the ledge">
+        <figcaption>I·01 First Breath. Steam from one vent beads on the line and runs into the pitcher.</figcaption>
+      </figure>
+    </div>
+  </div>
+</div>
+
+<main>
+  <section id="how" class="first">
+    <div class="wrap how">
+      <div>
+        <h2>How it plays</h2>
+        <p class="intro">Water falls. Steam rises. Every level asks you to use both.</p>
+        <ol class="steps">
+          <li>
+            <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M13 34c-4-5 4-7 0-12s4-7 0-12M20 34c-4-5 4-7 0-12s4-7 0-12M27 34c-4-5 4-7 0-12s4-7 0-12" fill="none" stroke="#F2E9DC" stroke-width="2.2" stroke-linecap="round" opacity=".9"/><path d="M11 37h18" stroke="#F0782A" stroke-width="2.4" stroke-linecap="round"/></svg>
+            <div><h3>Steam</h3><p>Tap a vent and steam climbs, drifts and spreads under the rock. It fades if nothing catches it.</p></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M5 13l30 14" stroke="#CFE1EE" stroke-width="3" stroke-linecap="round"/><path d="M10 17.5l-1.2 3.4M15 19.8l-1.2 3.4M20 22.1l-1.2 3.4M25 24.4l-1.2 3.4M30 26.7l-1.2 3.4" stroke="#BDD6E8" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <div><h3>Cold line</h3><p>Draw a line of rime with your finger. When you let go it drops like a solid thing and rests where it lands.</p></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 10l26 12" stroke="#CFE1EE" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="11.4" r="2.6" fill="#A9E3DC"/><circle cx="19" cy="14.6" r="2.6" fill="#A9E3DC"/><circle cx="26" cy="17.8" r="2.6" fill="#A9E3DC"/><path d="M31 25c2.6 3.6 4.4 5.8 4.4 8a4.4 4.4 0 0 1-8.8 0c0-2.2 1.8-4.4 4.4-8z" fill="#A9E3DC"/><circle cx="29.6" cy="32.6" r="1.1" fill="#EFFCFA"/></svg>
+            <div><h3>Rain</h3><p>Steam that touches the line beads into drops. The drops run to the low end and fall from its tip.</p></div>
+          </li>
+          <li>
+            <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M12 13c1.5 3.5 0 6-2.5 10.5-3 5.5 2 12.5 10.5 12.5s13.5-7 10.5-12.5C28 19 26.5 16.5 28 13z" fill="#43896A"/><path d="M14.5 26h11" stroke="#86D0C7" stroke-width="5" stroke-linecap="round" opacity=".55"/><ellipse cx="20" cy="13" rx="8.6" ry="2.6" fill="#140A0B" stroke="#C54D61" stroke-width="2.2"/><ellipse cx="30.5" cy="6.5" rx="5.2" ry="2.4" transform="rotate(-20 30.5 6.5)" fill="#5EA886"/></svg>
+            <div><h3>Pitcher</h3><p>Fill every pitcher plant to its mark at the same time. Water that lands on a hot stone boils back into steam, so even a trap can feed the rain.</p></div>
+          </li>
+        </ol>
+      </div>
+      <div class="stills">
+        <figure>
+          <img src="assets/play-split.webp" width="390" height="844" loading="lazy"
+               alt="Level I·10 of Dewpitch: one bent frosted line over two steam vents, with a pitcher plant at each end">
+          <figcaption>I·10 Split Rain. One bent line over two vents waters two pitchers.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/play-springs.webp" width="390" height="844" loading="lazy"
+               alt="Level II·10 of Dewpitch: two springs pour onto glowing hot stones, the steam rises to two frosted lines and drops run into two pitcher plants">
+          <figcaption>II·10 Hot Springs. Spring water hits hot stones, boils into steam and comes back as rain.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="levels">
+    <div class="wrap split">
+      <div>
+        <h2>Sixty levels, four chapters</h2>
+        <ul class="chapters">
+          <li><span class="t">Warm Steps<small>Free</small></span><span class="d">Vents, springs and the first hot stones.</span><span class="n">I</span></li>
+          <li><span class="t">Fumaroles</span><span class="d">Rock ceilings steer the steam. Two sources, two pitchers.</span><span class="n">II</span></li>
+          <li><span class="t">Rockfall</span><span class="d">Loose logs and boulders hold up your lines.</span><span class="n">III</span></li>
+          <li><span class="t">Updrafts</span><span class="d">Wind pushes the steam aside. Thorns refuse your ink.</span><span class="n">IV</span></li>
+        </ul>
+      </div>
+      <div>
+        <ul class="points">
+          <li>Every level is tested solvable: its reference line is replayed and wins.</li>
+          <li>Two helps you earn by playing. <strong>Hint</strong> shows a faint reference line; <strong>Refill</strong> pours every source once more and keeps your lines.</li>
+          <li>No lives, no energy, no timers. Restart whenever you like.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="price">
+    <div class="wrap">
+      <h2>Price</h2>
+      <div class="price">
+        <div class="tier">
+          <h3>Chapter I</h3>
+          <div class="amt">Free</div>
+          <p>Warm Steps: 15 levels, with Hint and Refill you earn as you play.</p>
+        </div>
+        <div class="tier full">
+          <h3>The whole highlands</h3>
+          <div class="amt">$3.99<small>US, one purchase</small></div>
+          <p>Opens Chapters II to IV, 45 more levels, and makes Hint and Refill unlimited.</p>
+        </div>
+      </div>
+      <p class="note">No subscription, no coins, no ads. Prices outside the US are set by the App Store. Bought it before? Open Settings and tap Restore purchases.</p>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <h2>Questions</h2>
+      <dl>
+        <dt>Are there ads?</dt>
+        <dd>No. Not between levels, not for rewards, not at all.</dd>
+        <dt>What does Dewpitch collect?</dt>
+        <dd>Nothing. Your progress and your purchase stay on your device. Read the <a href="privacy.html">privacy policy</a>.</dd>
+        <dt>I'm stuck on a level.</dt>
+        <dd>Use a Hint to see a faint reference line. You start with two and earn more by playing.</dd>
+        <dt>Will my progress move to a new phone?</dt>
+        <dd>No, progress is saved on the device. Your purchase comes back with Settings → Restore purchases.</dd>
+        <dt>Do I need a connection?</dt>
+        <dd>Not to play. Buying and restoring go through the App Store.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="end">
+    <div class="wrap">
+      <h2>Coming soon to the App&nbsp;Store</h2>
+      <p>Chapter I is free, so the first fifteen levels cost nothing to try.</p>
+      <p><a href="support.html">Ask a question on the support page</a></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="brand"><img src="assets/icon-180.png" alt="" width="28" height="28">Dewpitch</span>
+    <nav aria-label="Site"><a href="support.html">Support</a><a href="privacy.html">Privacy Policy</a></nav>
+    <p class="copy">© 2026 Dewpitch</p>
+  </div>
+</footer>
+</body>
+</html>
